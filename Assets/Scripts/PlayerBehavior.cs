@@ -1,9 +1,14 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
 {
+    private static PlayerBehavior _playerPosition;
+    public static PlayerBehavior GetPlayerPosition()
+    {
+        return _playerPosition;
+    }
+
     [SerializeField] private Material[] _colors;
 
     [SerializeField] private GameObject _bullet;
@@ -18,6 +23,8 @@ public class PlayerBehavior : MonoBehaviour
 
     private void Awake()
     {
+        ScoreManager._score = 0;
+        _playerPosition = this;
         _body = GetComponent<Renderer>();
         ChangeColor();
         StartCoroutine(Shoot());

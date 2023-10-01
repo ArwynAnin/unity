@@ -15,7 +15,6 @@ public class BulletBehavior : MonoBehaviour
         other.gameObject.TryGetComponent<MeshRenderer>(out MeshRenderer _tempRenderer);
 
         if (_tempRenderer.material.color == _renderer.material.color) _temp.Destroy();
-        
         Destroy (this.gameObject, 0.1f);
     }
 }

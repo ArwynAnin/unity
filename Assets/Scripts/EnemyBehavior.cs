@@ -9,15 +9,24 @@ public class EnemyBehavior : MonoBehaviour
         return _enemyList;
     }
 
-    [SerializeField] private Transform _player;
+    [SerializeField] private Material[] _colors;
     [SerializeField] private float _speed;
+
+    private Renderer _body;
+
+    private Transform _player;
+    
     private Vector3 _targetOrientation;
     private Vector3 _lastOrientation;
 
     private void Awake()
     {
         _enemyList.Add(this);
+        _body = GetComponent<Renderer>();
+        _player = PlayerBehavior.GetPlayerPosition().transform;
         _lastOrientation = Vector3.one;
+
+        PickColor();
     }
 
     private void FixedUpdate()
@@ -32,9 +41,14 @@ public class EnemyBehavior : MonoBehaviour
         Gameover();
     }
 
+    private void PickColor()
+    {
+        _body.material = _colors[Random.Range((int) 0, _colors.Length)];
+    }
+
     private void Rotate()
     {
-        if (_player.position == _lastOrientation) return;
+        //if (_player.position == _lastOrientation) return;
 
         _targetOrientation = _player.position - transform.position;
         transform.rotation = Quaternion.LookRotation(_targetOrientation);
@@ -48,6 +62,7 @@ public class EnemyBehavior : MonoBehaviour
 
     public void Destroy()
     {
+        ScoreManager._score++;
         DetectionRing._minDistance = 7.5f;
         _enemyList.Remove(this);
         Destroy(gameObject);
