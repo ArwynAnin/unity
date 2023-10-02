@@ -16,6 +16,8 @@ public class DetectionRing : MonoBehaviour
     private void Awake()
     {
         _circle = GetComponent<LineRenderer>();
+
+        // closest enemy
         _minDistance = _detectionRange;
         DrawDetectionCircle();
     }
@@ -30,8 +32,10 @@ public class DetectionRing : MonoBehaviour
         foreach (EnemyBehavior _enemy in EnemyBehavior.GetEnemyList())
         {
             float _currentDistance = Vector3.Distance(transform.position, _enemy.transform.position);
-            _minDistance = _minDistance > _currentDistance ? _currentDistance : _minDistance;
+            _minDistance = (_minDistance > _currentDistance) ? _currentDistance : _minDistance;
+
             if (_currentDistance > _detectionRange) return;
+
             if (_currentDistance == _minDistance)
             _target = _enemy.transform;
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyBehavior : MonoBehaviour
 {
@@ -17,14 +18,12 @@ public class EnemyBehavior : MonoBehaviour
     private Transform _player;
     
     private Vector3 _targetOrientation;
-    private Vector3 _lastOrientation;
 
     private void Awake()
     {
         _enemyList.Add(this);
         _body = GetComponent<Renderer>();
         _player = PlayerBehavior.GetPlayerPosition().transform;
-        _lastOrientation = Vector3.one;
 
         PickColor();
     }
@@ -52,7 +51,6 @@ public class EnemyBehavior : MonoBehaviour
 
         _targetOrientation = _player.position - transform.position;
         transform.rotation = Quaternion.LookRotation(_targetOrientation);
-        _lastOrientation = _player.position;
     }
 
     private void ApproachPlayer()
@@ -70,9 +68,6 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Gameover()
     {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #endif
-        Application.Quit();
+        SceneManager.LoadScene(1);
     }
 }
